@@ -25,11 +25,12 @@
        <div class="list_items">
            <div class="item"  v-for="item in prolist">
               <div class="item_info">
-                  <input type="checkbox" name="checkitem">
+                  <input type="checkbox" name="checkitem" :checked="item.check" @click="checkitem(item)">
                   <img  alt="" :src="item.proimg">
                   <span class="iname">{{item.proname}}</span>
                   <span class="present">
-                    <span v-for="part in item.parts">{{part.partsname}}<br></span>
+                     赠品：<br>
+                    <span v-for="part in item.parts">{{part.partsname}}&nbsp&nbsp</span>
                   </span>
               </div>
               <div class="item_price"> {{item.proprice | formatmoney}}</div>
@@ -43,11 +44,11 @@
            </div>
        </div>
        <div class="list_submit">
-        <input type="checkbox" name="checkall" class="checkall">
-        <a href="javascript:void(0);" class="selectall">全部选择</a>
+        <input type="checkbox" name="checkall" :checked="pcheckall" class="checkall" @click="checkall()">
+        <a href="javascript:void(0);" class="selectall red">全部选择</a>
         <a href="javascript:void(0);" class="canselselect">取消全选</a>
         <a href="javascript:void(0);" class="pay">立即支付</a>
-        <span class="totleprice">总计：￥20.00</span>
+        <span class="totleprice">总计：{{totalMoney | formatmoney}}</span>
        </div>
        </div>
   </body>
@@ -62,7 +63,10 @@ var vm = new Vue({
   el: '#app',
   data: {
         "title":"haha",
-        prolist:[]
+        prolist:[],
+        totalMoney:"",
+        count:0,
+        pcheckall:true
     },
   compute:{
     
@@ -73,7 +77,7 @@ var vm = new Vue({
 
   filters: {
             formatmoney: function (value) {
-              if (!value) return ''
+              if (!value) return "￥0.00";
               return "￥"+value.toFixed(2);
             }
           },
@@ -83,10 +87,43 @@ var vm = new Vue({
                  _this.$http.get("data/jsondata.json",{}).then(res=>{
                        _this.prolist = res.body.result.list;
                        _this.totalMoney = res.body.result.totleMoney;
+                       _this.count= res.body.result.list.length;
                        console.log(res)
                  });
-             }
-  }
+             },
+             checkitem(item){
+                if(!item.check)
+                   {
+                     item.check = true;
+                   }
+                   else {
+                     item.check = false;
+                   }
+                 this.calculateTotalMoney();
+             },
+             checkall(){
+                 var prolist = this.prolist;
+                  if(this.pcheckall == undefined){
+                    this.pcheckall = true;
+                    }
+                    this.pcheckall = !this.pcheckall;
+                   
+                    for(var i in prolist){
+                       prolist[i].check =  this.pcheckall
+                      }
+                     this.calculateTotalMoney();
+                  },
+              calculateTotalMoney(){
+                var prolist = this.prolist;
+                var total = 0;
+                for(var i in prolist){
+                      if(prolist[i].check){
+                      total += prolist[i].proprice * prolist[i].procount;
+                      }
+                    }
+                 this.totalMoney = total;
+              }
+           }
 })
 
   </script>

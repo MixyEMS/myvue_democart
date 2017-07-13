@@ -1,9 +1,10 @@
 {
 	"statuses":1,
 	"result":{
-		"totleMoney":59,
+		"totleMoney":209,
 		"list":[
            {
+              "check":true,
            	  "proid":"A0001",
            	  "proname":"一盒水果",
            	  "proprice":19,
@@ -21,6 +22,7 @@
            	  ]
            },
             {
+              "check":true,
            	  "proid":"A0002",
            	  "proname":"充电宝",
            	  "proprice":190,

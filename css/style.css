@@ -5,6 +5,7 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  min-width:810px;
 }
         html{
           font-size:10px;
@@ -81,7 +82,7 @@
             padding-left: 0.5rem;
             text-align: left;
           }
-           .list_items .item .item_info .present{
+           .list_items .item .item_info .present {
                    display: inline-block;
             width: 50%;
             height: auto;
@@ -91,6 +92,10 @@
             padding-left: 0.5rem;
             font-size: 1.2rem;
             text-align: left;
+          }
+          .list_items .item .item_info .present > span{         
+            color: #666;
+            font-size: 1.2rem;
           }
            .list_items .item .item_price{
               
@@ -133,12 +138,14 @@
          }
             .list_submit .selectall{
               
-              color:red;
+              color:#666;
             }
              .list_submit .canselselect{
               color:#666;
              }
-
+              .list_submit .selectall.red,.list_submit .canselselect.red{
+              color:red;
+             }
               .list_submit .totleprice{
                 float: right;
     margin-right: 2rem;
