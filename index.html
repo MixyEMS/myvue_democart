@@ -35,7 +35,7 @@
               </div>
               <div class="item_price"> {{item.proprice | formatmoney}}</div>
               <div class="item_count">
-                  <input type="number" name="itemcount" min="0" :value="item.procount" v-model="item.procount">
+                  <input type="number" name="itemcount" min="0" :value="item.procount" v-model="item.procount" @change="calculateTotalMoney()">
               </div>
               <div class="item_totleprice">{{item.proprice*item.procount | formatmoney}}</div>
               <div class="item_edit">
@@ -50,6 +50,21 @@
         <a href="javascript:void(0);" class="pay">立即支付</a>
         <span class="totleprice">总计：{{totalMoney | formatmoney}}</span>
        </div>
+   
+       <!-- 对话框遮罩 -->
+       <div class="model_cover"></div>
+       <!-- 删除对话框 -->
+         <div class="model_delete model_box">
+               <p class="model_title">
+                   确定要狠心删除嘛%>_<%
+               </p>
+               <div class="buttonarea">
+               <button class="btn_yes">删除吧</button>
+               <button class="btn_cancel">算了╮(╯▽╰)╭</button>
+               </div>
+               <a href="javascript:void(0);" class="btn_close">X</a>
+         </div>
+       <!-- 删除对话框end-->
        </div>
   </body>
 
@@ -81,13 +96,16 @@ var vm = new Vue({
               return "￥"+value.toFixed(2);
             }
           },
+  watch:{
+
+  },
   methods:{
              cartView:function(){
-                 var _this = this;
-                 _this.$http.get("data/jsondata.json",{}).then(res=>{
-                       _this.prolist = res.body.result.list;
-                       _this.totalMoney = res.body.result.totleMoney;
-                       _this.count= res.body.result.list.length;
+                 let _this = this;
+                 this.$http.get("data/jsondata.json",{}).then(res=>{
+                       this.prolist = res.body.result.list;
+                       this.totalMoney = res.body.result.totleMoney;
+                       this.count= res.body.result.list.length;
                        console.log(res)
                  });
              },
