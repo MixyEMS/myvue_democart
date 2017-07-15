@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>myvuee</title>
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="address" :class="isready?'show':'hide'">
+        <!-- 头部进度信息 -->
+        <div class="address_title">
+            <ul>
+                <li class="cur">地址确认</li>
+                <li>查看订单</li>
+                <li>支付</li>
+                <li>支付确认</li>
+            </ul>
+        </div>
+        <!-- 地址列表 -->
+        <div class="address_list">
+            <ul>
+                <li :class="curitem==index?'cur':''" v-if="index<showcount" v-for="(item,index) in addrlist" @click="curitem=index">
+                    <span class="sjr_name">{{item.userName}}</span>
+                    <span class="sjr_address">{{item.streetName}}</span>
+                    <span class="sjr_phone">{{item.tel}}</span>
+                    <span class="is_default" v-if="item.isDefault">默认地址</span>
+                    <span class="is_default2" v-if="!item.isDefault" @click="setDefault(item)">设为默认</span>
+                </li>
+                <li class="addnew">
+                    <span>+</span>
+                    <span>添加新地址</span>
+                </li>
+            </ul>
+            <a href="javascript:void(0)" class="btn_showmore" @click="showcount=addrlist.length">more</a>
+        </div>
+        <!-- 配送方式 -->
+        <div class="type_list">
+            <ul>
+                <li>
+                    <span class="type_name"></span>
+                    <span class="type_price"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+<script>
+Vue.use(VueResource);
+/* eslint-disable no-new */
+var vm = new Vue({
+    el: '#address',
+    data: {
+        "title": "haha",
+        curitem: 0,
+        isready: false,
+        addrlist: [],
+        showcount: 3
+    },
+    compute: {
+
+    },
+    mounted: function() {
+        this.addrView();
+        this.isready = true;
+    },
+
+    filters: {
+
+    },
+    watch: {
+
+    },
+    methods: {
+        addrView: function() {
+            let _this = this;
+            this.$http.get("data/jsonaddr.json", {}).then(res => {
+                console.log(res)
+                this.addrlist = res.body.result;
+            });
+        },
+        setDefault(item) {
+            for (var i = 0; i < this.addrlist.length; i++) {
+                this.addrlist[i].isDefault = false;
+            }
+            item.isDefault = true;
+        }
+
+    }
+})
+</script>
+
+</html>

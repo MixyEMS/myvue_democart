@@ -1,62 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>myvuee</title>
     <style>
 
-</style>
+    </style>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-   <link rel="stylesheet" href="css/style.css">
-
-  </head>
-  <body>
-    <div id="app" :class="isready?'show':'hide'" >
-    {{title}}
-    <div class="list_title">
-        <ul>
-          <li>商品信息</li>
-          <li>商品金额</li>
-          <li>商品数量</li>
-          <li>总金额</li>
-          <li>编辑</li>
-        </ul>
-       </div>
-       <div class="list_items">
-           <div class="item"  v-for="item in prolist">
-              <div class="item_info">
-                  <input type="checkbox" name="checkitem" :checked="item.check" @click="checkitem(item)">
-                  <img  alt="" :src="item.proimg">
-                  <span class="iname">{{item.proname}}</span>
-                  <span class="present">
+<body>
+    <div id="app" :class="isready?'show':'hide'">
+        {{title}}
+        <div class="list_title">
+            <ul>
+                <li>商品信息</li>
+                <li>商品金额</li>
+                <li>商品数量</li>
+                <li>总金额</li>
+                <li>编辑</li>
+            </ul>
+        </div>
+        <div class="list_items">
+            <div class="item" v-for="item in prolist">
+                <div class="item_info">
+                    <input type="checkbox" name="checkitem" :checked="item.check" @click="checkitem(item)">
+                    <img alt="" :src="item.proimg">
+                    <span class="iname">{{item.proname}}</span>
+                    <span class="present">
                      赠品：<br>
                     <span v-for="part in item.parts">{{part.partsname}}&nbsp&nbsp</span>
-                  </span>
-              </div>
-              <div class="item_price"> {{item.proprice | formatmoney}}</div>
-              <div class="item_count">
-                  <input type="number" name="itemcount" min="0" :value="item.procount" v-model="item.procount" @change="calculateTotalMoney()">
-              </div>
-              <div class="item_totleprice">{{item.proprice*item.procount | formatmoney}}</div>
-              <div class="item_edit">
-                 <a href="javascript:void(0);" class="delete" @click="showdelbox(item)">删除</a>
-              </div>
-           </div>
-       </div>
-       <div class="list_submit">
-        <input type="checkbox" name="checkall" :checked="pcheckall" class="checkall" @click="checkall()">
-        <a href="javascript:void(0);" class="selectall red">全部选择</a>
-        <a href="javascript:void(0);" class="canselselect">取消全选</a>
-        <a href="http://www.baidu.com" target="_blank" class="pay" >立即支付</a>
-        <span class="totleprice">总计：{{totalMoney | formatmoney}}</span>
-       </div>
-   
-       <!-- 对话框遮罩 -->
-       <div class="model_cover" :class="delflag?'coveropen':'coverclose'"></div>
-       <!-- 删除对话框 -->
-         <div class="model_delete model_box" :class="delflag?'modelopen':'modelclose'">
-               <p class="model_title">
-                   确定要狠心删除嘛%>_<%
+                    </span>
+                </div>
+                <div class="item_price"> {{item.proprice | formatmoney}}</div>
+                <div class="item_count">
+                    <input type="number" name="itemcount" min="0" :value="item.procount" v-model="item.procount" @change="calculateTotalMoney()">
+                </div>
+                <div class="item_totleprice">{{item.proprice*item.procount | formatmoney}}</div>
+                <div class="item_edit">
+                    <a href="javascript:void(0);" class="delete" @click="showdelbox(item)">删除</a>
+                </div>
+            </div>
+        </div>
+        <div class="list_submit">
+            <input type="checkbox" name="checkall" :checked="pcheckall" class="checkall" @click="checkall()">
+            <a href="javascript:void(0);" class="selectall red">全部选择</a>
+            <a href="javascript:void(0);" class="canselselect">取消全选</a>
+            <a href="address.html" target="_blank" class="pay">立即支付</a>
+            <span class="totleprice">总计：{{totalMoney | formatmoney}}</span>
+        </div>
+        <!-- 对话框遮罩 -->
+        <div class="model_cover" :class="delflag?'coveropen':'coverclose'"></div>
+        <!-- 删除对话框 -->
+        <div class="model_delete model_box" :class="delflag?'modelopen':'modelclose'">
+            <p class="model_title">
+                确定要狠心删除嘛%>_
+                <%
                </p>
                <div class="buttonarea">
                <button class="btn_yes" @click="delitem()">删除吧</button>
