@@ -11,7 +11,7 @@
 
   </head>
   <body>
-    <div id="app">
+    <div id="app" :class="isready?'show':'hide'" >
     {{title}}
     <div class="list_title">
         <ul>
@@ -39,7 +39,7 @@
               </div>
               <div class="item_totleprice">{{item.proprice*item.procount | formatmoney}}</div>
               <div class="item_edit">
-                 <a href="javascript:void(0);" class="delete">删除</a>
+                 <a href="javascript:void(0);" class="delete" @click="showdelbox(item)">删除</a>
               </div>
            </div>
        </div>
@@ -47,22 +47,22 @@
         <input type="checkbox" name="checkall" :checked="pcheckall" class="checkall" @click="checkall()">
         <a href="javascript:void(0);" class="selectall red">全部选择</a>
         <a href="javascript:void(0);" class="canselselect">取消全选</a>
-        <a href="javascript:void(0);" class="pay">立即支付</a>
+        <a href="http://www.baidu.com" target="_blank" class="pay" >立即支付</a>
         <span class="totleprice">总计：{{totalMoney | formatmoney}}</span>
        </div>
    
        <!-- 对话框遮罩 -->
-       <div class="model_cover"></div>
+       <div class="model_cover" :class="delflag?'coveropen':'coverclose'"></div>
        <!-- 删除对话框 -->
-         <div class="model_delete model_box">
+         <div class="model_delete model_box" :class="delflag?'modelopen':'modelclose'">
                <p class="model_title">
                    确定要狠心删除嘛%>_<%
                </p>
                <div class="buttonarea">
-               <button class="btn_yes">删除吧</button>
-               <button class="btn_cancel">算了╮(╯▽╰)╭</button>
+               <button class="btn_yes" @click="delitem()">删除吧</button>
+               <button class="btn_cancel" @click="hidedelbox()">算了╮(╯▽╰)╭</button>
                </div>
-               <a href="javascript:void(0);" class="btn_close">X</a>
+               <a href="javascript:void(0);" class="btn_close" @click="hidedelbox()">X</a>
          </div>
        <!-- 删除对话框end-->
        </div>
@@ -81,13 +81,17 @@ var vm = new Vue({
         prolist:[],
         totalMoney:"",
         count:0,
-        pcheckall:true
+        pcheckall:true,
+        delflag:false,
+        curitem:null,
+        isready:false
     },
   compute:{
     
   },
      mounted:function(){   
            this.cartView();
+           this.isready = true;
   },
 
   filters: {
@@ -140,7 +144,21 @@ var vm = new Vue({
                       }
                     }
                  this.totalMoney = total;
+              },
+              showdelbox(item){
+                this.delflag = true;
+                this.curitem = item;
+              },
+              hidedelbox(){
+                this.delflag = false;
+              },
+              delitem(){
+                 var index = this.prolist.indexOf(this.curitem);
+                 this.prolist.splice(index,1);
+                 this.calculateTotalMoney();
+                 this.delflag = false;
               }
+
            }
 })
 
